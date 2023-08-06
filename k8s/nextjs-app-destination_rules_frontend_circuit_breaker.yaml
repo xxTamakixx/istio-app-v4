@@ -1,0 +1,40 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: frontend-service 
+spec:
+  host: frontend-service 
+  trafficPolicy: 
+      connectionPool: 
+        http:
+          http1MaxPendingRequests: 1
+          maxRequestsPerConnection: 1
+        tcp:
+          maxConnections: 2 
+          connectTimeout: 30ms
+          tcpKeepalive:
+            time: 7200s
+            interval: 75s
+      outlierDetection: 
+        consecutive5xxErrors: 1
+        interval: 1s
+        baseEjectionTime: 3m 
+
+
+# spec: DestinationRuleの具体的な設定がここに含まれます。
+# host: ルールが適用される対象のサービス名。ここでは "productpage" サービスに対してのルールです。
+# trafficPolicy: サービスのトラフィックに関するポリシー設定。
+# connectionPool: サービスへの接続プールに関する設定。
+# http: HTTPトラフィックに関する設定。
+# http2MaxRequests: 同時に許可される最大のHTTP2リクエスト数。ここでは1と指定しています。
+# maxRequestsPerConnection: 1つの接続あたりの最大リクエスト数。ここでは1と指定しています。
+# tcp: TCPトラフィックに関する設定。
+# maxConnections: 最大の接続数。ここでは2と指定しています。
+# connectTimeout: 接続のタイムアウト時間。ここでは30ミリ秒と指定しています。
+# tcpKeepalive: TCPのKeepalive設定。
+# time: Keepaliveが発生するまでの時間。ここでは7200秒（2時間）と指定しています。
+# interval: Keepaliveの間隔。ここでは75秒と指定しています。
+# outlierDetection: 異常検出に関する設定。
+# consecutiveErrors: 連続するエラーの許容回数。ここでは1と指定しています。
+# interval: 異常検出を行う間隔。ここでは1秒と指定しています。
+# baseEjectionTime: ホストをイジェクトするベースとなる時間。ここでは3分と指定しています。
